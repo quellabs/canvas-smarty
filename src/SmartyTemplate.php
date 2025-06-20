@@ -3,6 +3,7 @@
 	namespace Quellabs\Canvas\Smarty;
 	
 	use Smarty\Smarty;
+	use Quellabs\Contracts\Templates\TemplateRenderException;
 	use Quellabs\Contracts\Templates\TemplateEngineInterface;
 	
 	class SmartyTemplate implements TemplateEngineInterface {
@@ -189,9 +190,12 @@
 		 * @return void
 		 */
 		public function clearTemplateCache(string $template): void {
-			// Clear cache only for the specified template
-			// This is more efficient than clearing all cache when only one template changed
-			$this->smarty->clearCache($template);
+			try {
+				// Clear cache only for the specified template
+				// This is more efficient than clearing all cache when only one template changed
+				$this->smarty->clearCache($template);
+			} catch (\Exception $e) {
+			}
 		}
 		
 		/**
@@ -242,10 +246,10 @@
 					$snippet = strlen($template) > 50 ? substr($template, 0, 50) . '...' : $template;
 					$errorContext = "template string '{$snippet}'";
 				} else {
-					$errorContext = "template '{$template}'";
+					$errorContext = $template;
 				}
 				
-				throw new \Exception("Failed to render {$errorContext}: " . $e->getMessage(), 0, $e);
+				throw new TemplateRenderException($errorContext, $e->getMessage(), $e);
 			}
 		}
 	}
