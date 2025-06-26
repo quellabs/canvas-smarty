@@ -34,7 +34,7 @@
   "require": {
     "smarty/smarty": "^5.0",
     "quellabs/discover": "^1.0",
-    "quellabs/dependency-injection": "^1.0",
+    "quellabs/dependency-injection": "dev-feature/snake-case",
     "quellabs/contracts": "^1.0",
     "quellabs/sculpt": "^1.0"
   },
